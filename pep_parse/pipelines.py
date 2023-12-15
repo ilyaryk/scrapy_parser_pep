@@ -15,6 +15,8 @@ class PEP(Base):
 
 
 class PepParsePipeline:
+    statuses: dict = {}
+
     def open_spider(self, spider):
         engine = create_engine('sqlite:///sqlite.db')
         Base.metadata.create_all(engine)
@@ -26,32 +28,10 @@ class PepParsePipeline:
             name=item['name'],
             status=item['status']
         )
-        self.session.add(pep)
-        self.session.commit()
-        return item
-
-    def close_spider(self, spider):
-        self.session.close()
-
-
-class Status(Base):
-    __tablename__ = 'status'
-    id = Column(Integer, primary_key=True)
-    status = Column(Text)
-    total = Column(Integer)
-
-
-class StatusToDBPipeline:
-    statuses: dict = {}
-
-    def open_spider(self, spider):
-        engine = create_engine('sqlite:///sqlite.db')
-        Base.metadata.create_all(engine)
-        self.session = Session(engine)
-
-    def process_item(self, item, spider):
         self.statuses[item['status']] = self.statuses.get(
             item['status'], 0) + 1
+        self.session.add(pep)
+        self.session.commit()
         return item
 
     def close_spider(self, spider):
