@@ -2,8 +2,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, Column, Integer, Text
 from sqlalchemy.orm import Session
 import time
+from pathlib import Path
 
 Base = declarative_base()
+BASE_DIR = Path(__file__).parent
 
 
 class PEP(Base):
