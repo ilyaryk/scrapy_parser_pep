@@ -3,12 +3,6 @@ from sqlalchemy import create_engine, Column, Integer, Text
 from sqlalchemy.orm import Session
 import time
 
-
-class PepParsePipeline:
-    def process_item(self, item, spider):
-        return item
-
-
 Base = declarative_base()
 
 
@@ -20,7 +14,7 @@ class PEP(Base):
     status = Column(Text)
 
 
-class PEPToDBPipeline:
+class PepParsePipeline:
     def open_spider(self, spider):
         engine = create_engine('sqlite:///sqlite.db')
         Base.metadata.create_all(engine)
