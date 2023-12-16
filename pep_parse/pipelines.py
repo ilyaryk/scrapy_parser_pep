@@ -39,7 +39,7 @@ class PepParsePipeline:
     def close_spider(self, spider):
         now = time.localtime()
         now = time.strftime("%Y-%m-%d_%H_%M_%S", now)
-        with open(f'results/status_summary_{now}.csv',
+        with open(f'{BASE_DIR}/results/status_summary_{now}.csv',
                   mode='w', encoding='utf-8') as f:
             f.write('Статус,Количество\n')
             total = 0
