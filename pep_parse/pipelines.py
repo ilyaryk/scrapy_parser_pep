@@ -1,5 +1,4 @@
 from sqlalchemy.ext.declarative import declarative_base
-
 import time
 from pathlib import Path
 
@@ -21,11 +20,11 @@ class PepParsePipeline:
     def close_spider(self, spider):
         now = time.localtime()
         now = time.strftime("%Y-%m-%d_%H_%M_%S", now)
+        sequence = 'Статус,Количество\n'
         with open(f'{BASE_DIR}/results/status_summary_{now}.csv',
                   mode='w', encoding='utf-8') as f:
-            f.write('Статус,Количество\n')
             total = 0
-            for i in self.statuses.keys():
-                total += self.statuses[i]
-                f.write(f'{i},{self.statuses[i]}\n')
-            f.write(f'Total,{total}\n')
+            for status in self.statuses.keys():
+                total += self.statuses[status]
+                sequence += f'{status},{self.statuses[status]}\n'
+            f.write(sequence+f'Total,{total}\n')
