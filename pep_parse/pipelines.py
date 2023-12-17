@@ -1,39 +1,32 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine, Column, Integer, Text
+from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 import time
 from pathlib import Path
+from pep_parse.items import PEP
 
 Base = declarative_base()
 BASE_DIR = Path(__file__).parent
-
-
-class PEP(Base):
-    __tablename__ = 'pep'
-    id = Column(Integer, primary_key=True)
-    number = Column(Integer)
-    name = Column(Text)
-    status = Column(Text)
 
 
 class PepParsePipeline:
     statuses: dict = {}
 
     def open_spider(self, spider):
-        engine = create_engine('sqlite:///sqlite.db')
-        Base.metadata.create_all(engine)
-        self.session = Session(engine)
-
+        # engine = create_engine('sqlite:///sqlite.db')
+        # Base.metadata.create_all(engine)
+        # self.session = Session(engine)
+        pass
     def process_item(self, item, spider):
-        pep = PEP(
+        '''pep = PEP(
             number=item['number'],
             name=item['name'],
             status=item['status']
-        )
+        )'''
         self.statuses[item['status']] = self.statuses.get(
             item['status'], 0) + 1
-        self.session.add(pep)
-        self.session.commit()
+        # self.session.add(pep)
+        # self.session.commit()
         return item
 
     def close_spider(self, spider):
@@ -47,4 +40,4 @@ class PepParsePipeline:
                 total += self.statuses[i]
                 f.write(f'{i},{self.statuses[i]}\n')
             f.write(f'Total,{total}\n')
-        self.session.close()
+        # self.session.close()
