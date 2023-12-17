@@ -27,4 +27,4 @@ class PepParsePipeline:
             for status in self.statuses.keys():
                 total += self.statuses[status]
                 sequence += f'{status},{self.statuses[status]}\n'
-            f.write(sequence+f'Total,{total}\n')
+            f.write(sequence + f'Total,{total}\n')
